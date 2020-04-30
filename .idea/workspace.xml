@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b1076d28-4773-4626-a238-3a88c0cadbc9" name="Default Changelist" comment="" />
+    <list default="true" id="b1076d28-4773-4626-a238-3a88c0cadbc9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/BeanHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/BeanContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/ClassHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/ClassHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/ClassUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/util/ClassUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/annotations/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/HelperLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/IOCApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Injection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/annotations/Injection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/IocHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/IocHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/ReflectionUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/util/ReflectionUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/annotations/Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/test/TestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/TestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/test/TestService.java" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +35,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1ZHgCORRtLsAl3wE0dyMAQCY0H1" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -23,8 +45,22 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -63,6 +99,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="556" y="98" key="#Auto_Import" timestamp="1584507961703">
@@ -119,7 +166,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/company/IocHelper.java</url>
-          <line>24</line>
+          <line>27</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>

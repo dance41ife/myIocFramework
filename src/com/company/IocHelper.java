@@ -1,12 +1,15 @@
 package com.company;
 
+import com.company.annotations.Injection;
+import com.company.util.ReflectionUtil;
+
 import java.lang.reflect.Field;
 import java.util.Map;
 
 public class IocHelper {
     static {
         //获得所有Bean类和Bean实例的关系
-        Map<Class<?>,Object> beanMap = BeanHelper.getBeanMap();
+        Map<Class<?>,Object> beanMap = BeanContainer.getBeanMap();
         //遍历BeanMap
         for(Map.Entry<Class<?>,Object> entry : beanMap.entrySet()){
             //从beanMap中 取 Bean类和Bean实例
