@@ -79,33 +79,30 @@ public final class ClassUtil {
     }
 
     private static void addClass(Set<Class<?>> classSet, String packagePath, String packageName) {
-        File[] files = new File(packagePath).listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return (file.isFile() && file.getName().endsWith(".class")) || file.isDirectory();
-            }
-        });
-        for (File file : files) {
-            String fileName = file.getName();
-            if (file.isFile()) {
-                String className = fileName.substring(0, fileName.lastIndexOf("."));
-                if (packageName != null) {
-                    className = packageName + "." + className;
-                }
-                doAddClass(classSet, className);
-            } else {
-                String subPackagePath = fileName;
-                if (packagePath != null) {
-                    subPackagePath = packagePath + "/" + subPackagePath;
-                }
-                String subPackageName = fileName;
-                if (packageName != null) {
-                    subPackageName = packageName + "." + subPackageName;
-                }
-                addClass(classSet, subPackagePath, subPackageName);
-            }
+        Optional.ofNullable(new File(packagePath)
+                .listFiles(file -> (file.isFile() && file.getName().endsWith(".class")) || file.isDirectory()))
+                .ifPresent(fileArray -> {
+                    for (File file : fileArray) {
+                        String fileName = file.getName();
+                        if (file.isFile()) {
+                            String className = fileName.substring(0, fileName.lastIndexOf("."));
+                            if (packageName != null) {
+                                className = packageName + "." + className;
+                            }
+                            doAddClass(classSet, className);
+                        } else {
+                            String subPackagePath = fileName;
+                            subPackagePath = packagePath + "/" + subPackagePath;
+                            String subPackageName = fileName;
+                            if (packageName != null) {
+                                subPackageName = packageName + "." + subPackageName;
+                            }
+                            addClass(classSet, subPackagePath, subPackageName);
+                        }
 
-        }
+                    }
+                });
+
     }
 
     private static void doAddClass(Set<Class<?>> classSet, String className) {

@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.annotations.Bean;
 import com.company.annotations.Controller;
 import com.company.annotations.Service;
 import com.company.util.ClassUtil;
@@ -7,7 +8,8 @@ import com.company.util.ClassUtil;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class ClassHelper {
+// 加载所有有注解的类
+public final class IOCAppClassLoader {
     private static final Set<Class<?>> CLASS_SET ;
 
     static {
@@ -41,8 +43,19 @@ public final class ClassHelper {
 
     public static Set<Class<?>> getBeanClassSet(){
         Set<Class<?>> classSet = new HashSet<Class<?>>();
+        for (Class<?> cls : CLASS_SET){
+            if(cls.isAnnotationPresent(Bean.class)){
+                classSet.add(cls);
+            }
+        }
+        return classSet;
+    }
+
+    public static Set<Class<?>> getAllClassSet(){
+        Set<Class<?>> classSet = new HashSet<Class<?>>();
         classSet.addAll(getServiceClassSet());
         classSet.addAll(getControllerClassSet());
+        classSet.addAll(getBeanClassSet());
         return classSet;
     }
 

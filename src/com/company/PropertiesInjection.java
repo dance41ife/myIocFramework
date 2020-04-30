@@ -6,7 +6,8 @@ import com.company.util.ReflectionUtil;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-public class IocHelper {
+// 根据注解进行注入
+public class PropertiesInjection {
     static {
         //获得所有Bean类和Bean实例的关系
         Map<Class<?>,Object> beanMap = BeanContainer.getBeanMap();

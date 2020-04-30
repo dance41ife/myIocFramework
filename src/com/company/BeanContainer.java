@@ -6,12 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+// 存储类-示例的键值对
 public class BeanContainer {
     /*定义bean映射 用于存放bean类与实例之间的映射关系*/
     private static final Map<Class<?>,Object> BEAN_MAP = new HashMap<Class<?>,Object>();
 
     static {
-        Set<Class<?>> beanClassSet = ClassHelper.getBeanClassSet();
+        Set<Class<?>> beanClassSet = IOCAppClassLoader.getAllClassSet();
         for(Class<?> cls : beanClassSet){
             //实例化
             Object obj = ReflectionUtil.newInstance(cls);
