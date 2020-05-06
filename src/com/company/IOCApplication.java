@@ -7,7 +7,8 @@ public final class IOCApplication {
         Class<?> [] classes = {
                 IOCAppClassLoader.class,
                 BeanContainer.class,
-                PropertiesInjection.class
+                PropertiesInjection.class,
+                ProxyInjection.class
         };
         for(Class<?> cls : classes){
             ClassUtil.loadClass(cls.getName(),true);

@@ -1,20 +1,17 @@
 package com.company;
 
 import com.company.test.TestController;
+import com.company.test.TestTargetClass;
 
 public class Main {
 
     public static void main(String[] args) {
 	// write your code here
         IOCApplication.init();
-        TestController TB = BeanContainer.getBean(TestController.class);
-        System.out.println(TB.getTestService().getMsg());
+        TestTargetClass targetClass = BeanContainer.getBean(TestTargetClass.class);
+       targetClass.printClassName();
+       targetClass.printHello();
 
-        try {
-            Class temp = Class.forName("com.company.test.TestController");
-            System.out.println(temp.getName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+
     }
 }

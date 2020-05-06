@@ -1,10 +1,10 @@
 package com.company;
 
 import com.company.annotations.Before;
-import com.company.annotations.Injection;
-import com.company.util.ReflectionUtil;
+import net.sf.cglib.proxy.*;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 public class ProxyInjection {
@@ -17,20 +17,31 @@ public class ProxyInjection {
         for (Map.Entry<Class<?>, Object> entry : beanMap.entrySet()) {
             //从beanMap中 取 Bean类和Bean实例
             Class<?> beanClass = entry.getKey();
-            Object beanInstance = entry.getValue();
-            //获取Bean类定义所有成员变量
-            Field[] beanFields = beanClass.getDeclaredFields();
-            for (Field beanField : beanFields) {
-                if (beanField.isAnnotationPresent(Before.class)) {
-                    Before beforeAnnotation = beanField.getAnnotation(Before.class);
+            Object instance = entry.getValue();
+
+            Method[] methods = beanClass.getDeclaredMethods();
+            for (Method beanMethod : methods) {
+                if (beanMethod.isAnnotationPresent(Before.class)) {
+                    Before beforeAnnotation = beanMethod.getAnnotation(Before.class);
                     try {
                         targetClass = Class.forName(beforeAnnotation.targetClass());
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                    String targetField = beforeAnnotation.targetMethod();
+                    String targetMethod = beforeAnnotation.targetMethod();
+                    Enhancer enhancer = new Enhancer();
+                    enhancer.setSuperclass(targetClass);
+                    enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) -> {
+                        if (method.getName().equals(targetMethod)) {
+                            beanMethod.invoke(instance, null);
+                            Object result = methodProxy.invokeSuper(o, objects);
+                            return result;
+                        } else {
+                            return methodProxy.invokeSuper(o, objects);
+                        }
 
-
+                    });
+                    beanMap.put(targetClass, enhancer.create());
                 }
             }
 //            if(beanFields.length != 0){
