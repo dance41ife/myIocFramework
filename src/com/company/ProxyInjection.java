@@ -1,9 +1,10 @@
 package com.company;
 
 import com.company.annotations.Before;
+import com.company.proxy.BeforeInterceptor;
+import com.company.proxy.ProxyFactory;
 import net.sf.cglib.proxy.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -18,9 +19,10 @@ public class ProxyInjection {
             //从beanMap中 取 Bean类和Bean实例
             Class<?> beanClass = entry.getKey();
             Object instance = entry.getValue();
+            for (Method beanMethod :  beanClass.getDeclaredMethods()) {
 
-            Method[] methods = beanClass.getDeclaredMethods();
-            for (Method beanMethod : methods) {
+
+                ProxyFactory.getProxy(beanMethod,instance);
                 if (beanMethod.isAnnotationPresent(Before.class)) {
                     Before beforeAnnotation = beanMethod.getAnnotation(Before.class);
                     try {
@@ -31,32 +33,11 @@ public class ProxyInjection {
                     String targetMethod = beforeAnnotation.targetMethod();
                     Enhancer enhancer = new Enhancer();
                     enhancer.setSuperclass(targetClass);
-                    enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) -> {
-                        if (method.getName().equals(targetMethod)) {
-                            beanMethod.invoke(instance, null);
-                            Object result = methodProxy.invokeSuper(o, objects);
-                            return result;
-                        } else {
-                            return methodProxy.invokeSuper(o, objects);
-                        }
 
-                    });
+                    enhancer.setCallback(new BeforeInterceptor(targetMethod, instance, beanMethod));
                     beanMap.put(targetClass, enhancer.create());
                 }
             }
-//            if(beanFields.length != 0){
-//                //遍历成员变量 判断是否有带有Injection注解
-//                for(Field beanField : beanFields){
-//                    if(beanField.isAnnotationPresent(Injection.class)){
-//                        //在bean map中获取bean field对应的实例
-//                        Class<?> beanFieldClass = beanField.getType();
-//                        Object beanFieldInstance = beanMap.get(beanFieldClass);
-//                        if(beanFieldInstance != null){
-//                            ReflectionUtil.setField(beanInstance,beanField,beanFieldInstance);
-//                        }
-//                    }
-//                }
-//            }
 
         }
     }

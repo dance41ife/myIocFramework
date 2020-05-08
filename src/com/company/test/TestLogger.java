@@ -10,4 +10,10 @@ public class TestLogger {
     public void printTest(){
         System.out.println("aaa");
     }
+
+
+    @Before(targetClass = "com.company.test.TestTargetClass", targetMethod = "printClassName")
+    public void printLog (){
+        System.out.println("log");
+    }
 }
