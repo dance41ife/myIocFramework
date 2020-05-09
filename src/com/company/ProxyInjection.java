@@ -20,22 +20,10 @@ public class ProxyInjection {
             Class<?> beanClass = entry.getKey();
             Object instance = entry.getValue();
             for (Method beanMethod :  beanClass.getDeclaredMethods()) {
-
-
-                ProxyFactory.getProxy(beanMethod,instance);
-                if (beanMethod.isAnnotationPresent(Before.class)) {
-                    Before beforeAnnotation = beanMethod.getAnnotation(Before.class);
-                    try {
-                        targetClass = Class.forName(beforeAnnotation.targetClass());
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    String targetMethod = beforeAnnotation.targetMethod();
-                    Enhancer enhancer = new Enhancer();
-                    enhancer.setSuperclass(targetClass);
-
-                    enhancer.setCallback(new BeforeInterceptor(targetMethod, instance, beanMethod));
-                    beanMap.put(targetClass, enhancer.create());
+                try {
+                    beanMap.put(targetClass, ProxyFactory.getProxy(beanMethod,instance));
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
 
