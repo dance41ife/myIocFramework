@@ -6,10 +6,10 @@ import com.company.annotations.Before;
 @Bean
 public class TestLogger {
 
-    @Before(targetClass = "com.company.test.TestTargetClass",targetMethod = "printClassName")
-    public void printTest(){
-        System.out.println("aaa");
-    }
+//    @Before(targetClass = "com.company.test.TestTargetClass",targetMethod = "printClassName")
+//    public void printTest(){
+//        System.out.println("aaa");
+//    }
 
 
     @Before(targetClass = "com.company.test.TestTargetClass", targetMethod = "printClassName")

@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ProxyFactory {
 
-    private static ArrayList<Class> proxyAnnotations = new ArrayList<Class>() {{
+    public static ArrayList<Class> proxyAnnotations = new ArrayList<Class>() {{
         add(Before.class);
         add(Around.class);
 
@@ -25,52 +25,48 @@ public class ProxyFactory {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(superClass);
 
-        MethodInterceptor interceptor = getInterceptorByType(targetMethod, targetInstance, proxyMethod,proxyType);
+        MethodInterceptor interceptor = getInterceptorByType(targetMethod, targetInstance, proxyMethod, proxyType);
 
         enhancer.setCallback(interceptor);
 
         return enhancer.create();
     }
 
-    public static Object getProxy(Method proxyMethod, Object instance) throws ClassNotFoundException {
+    public static TargetClassWithProxyInstance getProxy(Method proxyMethod, Object instance) throws ClassNotFoundException {
         Class targetClass = null;
         AtomicReference<String> targetMethod = new AtomicReference<>("");
         AtomicReference<String> targetClassPath = new AtomicReference<>("");
-
         AtomicReference<MethodAnnotationType> type = new AtomicReference<>();
+
+
         for (Annotation methodAnnotation :
                 proxyMethod.getAnnotations()) {
-            if (proxyAnnotations.contains(methodAnnotation.getClass())) {
 
-                Optional.ofNullable(getTargetClassPath(proxyMethod, methodAnnotation))
-                        .ifPresent(annotation -> {
-                            if (annotation instanceof Before) {
-                                targetMethod.set(((Before) annotation).targetMethod());
-                                targetClassPath.set(((Before) annotation).targetClass());
-                                type.set(MethodAnnotationType.BEFORE);
-                            } else if (annotation instanceof Around) {
-                                targetClassPath.set(((Around) annotation).targetClass());
-                                targetMethod.set(((Around) annotation).targetMethod());
-                                type.set(MethodAnnotationType.AROUND);
-                            }
-                        });
+            Optional.ofNullable(getAnnotationType(proxyMethod, methodAnnotation))
+                    .ifPresent(annotation -> {
+                        if (annotation instanceof Before) {
+                            targetMethod.set(((Before) annotation).targetMethod());
+                            targetClassPath.set(((Before) annotation).targetClass());
+                            type.set(MethodAnnotationType.BEFORE);
+                        } else if (annotation instanceof Around) {
+                            targetClassPath.set(((Around) annotation).targetClass());
+                            targetMethod.set(((Around) annotation).targetMethod());
+                            type.set(MethodAnnotationType.AROUND);
+                        }
+                    });
 
-                targetClass = Class.forName(targetClassPath.get());
+            targetClass = Class.forName(targetClassPath.get());
 
-            }
         }
 
-        return getProxy(targetMethod.get(), instance, proxyMethod, targetClass, type.get());
+        return new TargetClassWithProxyInstance(targetClass,getProxy(targetMethod.get(), instance, proxyMethod, targetClass, type.get())) ;
 
     }
 
-    private static Annotation getTargetClassPath(Method method, Annotation annotation) {
-        if (annotation.annotationType() == Before.class) {
-            return method.getAnnotation(Before.class);
-        } else if (annotation.annotationType() == Around.class) {
-            return method.getAnnotation(Around.class);
-        }
-        return null;
+    @SuppressWarnings("unchecked")
+    private static Annotation getAnnotationType(Method method, Annotation annotation) {
+
+        return method.getAnnotation(proxyAnnotations.get(proxyAnnotations.indexOf(annotation.annotationType())));
     }
 
 
@@ -81,5 +77,25 @@ public class ProxyFactory {
             default:
                 return null;
         }
+    }
+
+    public static class TargetClassWithProxyInstance {
+        private Class targetClass;
+        private Object proxyInstance;
+
+        public TargetClassWithProxyInstance(Class targetClass, Object proxyInstance) {
+            this.targetClass = targetClass;
+            this.proxyInstance = proxyInstance;
+        }
+
+        public Class getTargetClass() {
+            return targetClass;
+        }
+
+
+        public Object getProxyInstance() {
+            return proxyInstance;
+        }
+
     }
 }

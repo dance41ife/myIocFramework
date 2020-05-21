@@ -10,7 +10,6 @@ public class Main {
         IOCApplication.init();
         TestTargetClass targetClass = BeanContainer.getBean(TestTargetClass.class);
        targetClass.printClassName();
-       targetClass.printHello();
 
 
     }
