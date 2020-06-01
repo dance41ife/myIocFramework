@@ -20,7 +20,11 @@ public class ProxyFactory {
 
     }};
 
-
+    /**
+     *
+     * @param superClass 需要被代理的实例的Class类型
+     *
+     */
     private static Object getProxy(String targetMethod, Object targetInstance, Method proxyMethod, Class superClass, MethodAnnotationType proxyType) {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(superClass);
@@ -32,6 +36,11 @@ public class ProxyFactory {
         return enhancer.create();
     }
 
+    /**
+     * @param instance    需要被代理的实例
+     * @param proxyMethod 需要被注入切面的方法，即在这个方法应该在被代理的实例执行时注入执行
+     * @return TargetClassWithProxyInstance 包含了生成的代理实例以及目标实例的类
+     */
     public static TargetClassWithProxyInstance getProxy(Method proxyMethod, Object instance) throws ClassNotFoundException {
         Class targetClass = null;
         AtomicReference<String> targetMethod = new AtomicReference<>("");
@@ -59,7 +68,7 @@ public class ProxyFactory {
 
         }
 
-        return new TargetClassWithProxyInstance(targetClass,getProxy(targetMethod.get(), instance, proxyMethod, targetClass, type.get())) ;
+        return new TargetClassWithProxyInstance(targetClass, getProxy(targetMethod.get(), instance, proxyMethod, targetClass, type.get()));
 
     }
 
@@ -74,6 +83,8 @@ public class ProxyFactory {
         switch (type) {
             case BEFORE:
                 return new BeforeInterceptor(targetMethod, targetInstance, proxyMethod);
+            case AROUND:
+                return new AroundInterceptor(targetMethod, targetInstance, proxyMethod);
             default:
                 return null;
         }

@@ -13,24 +13,18 @@ import java.lang.reflect.Method;
  * Object[] objects 为参数，
  * MethodProxy methodProxy CGlib方法代理对象
  */
-public class BeforeInterceptor implements MethodInterceptor {
+public class BeforeInterceptor extends BaseInterceptor {
 
-    private String targetMethod;
-    private Object targetInstance;
-    private Method targetInstanceMethod;
 
     public BeforeInterceptor(String targetMethod, Object targetInstance, Method targetInstanceMethod) {
-        this.targetMethod = targetMethod;
-        this.targetInstance = targetInstance;
-        this.targetInstanceMethod = targetInstanceMethod;
+        super(targetMethod,targetInstance,targetInstanceMethod);
     }
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         if (method.getName().equals(this.targetMethod)) {
             this.targetInstanceMethod.invoke(this.targetInstance);
-            Object result = methodProxy.invokeSuper(o, objects);
-            return result;
+            return methodProxy.invokeSuper(o, objects);
         } else {
             return methodProxy.invokeSuper(o, objects);
         }
